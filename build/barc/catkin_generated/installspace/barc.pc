@@ -1,0 +1,8 @@
+prefix=/home/bruce/PycharmProjects/barc_ros_ws/install
+
+Name: barc
+Description: Description of barc
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: geometry_msgs roscpp rospy sensor_msgs std_msgs nav_msgs message_runtime
