@@ -10,7 +10,7 @@ from std_msgs.msg import Float64
 import time
 
 import numpy as np
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as pl
 from hpl_functions import plot_final, plot_closed_loop, plotFromFile, vx_interp, ey_interp, vehicle_model
 from Track_new import *
 from matplotlib.patches import Polygon
@@ -45,40 +45,24 @@ def position_callback(m):
 
     current_x = -1*m.pose.pose.position.y + 1.2551#0.7583
     current_y = m.pose.pose.position.x + 4.6245
-    # print(f'current_x:{current_x}')
-    # print(f'current_y:{current_y}')
-    # # # print(current_y)
 
-    # print(f'current_psi:{phi}')
-    # # print(f'current_v: {(Vx**2 + Vy**2)**0.5}')
-
-    # x_state = np.array([current_x, current_y, (Vx**2 + Vy**2)**0.5, phi])
-
-    # # listener_thread = threading.Thread(target=start_mpc)
-    # # listener_thread.start()
 
     try:
-        # x_pred, u_pred, solver_status = HPLMPC.solve(x_state, std_s, std_ey, centers)
         start_time = time.time()
         x_pred, u_pred, solver_flag, best, clc = HPLMPC.solve(x_state, u_state)
-        # rospy.loginfo(clc)
+
         end_time = time.time()
-        # print(f'time:{end_time - start_time}')
         u_state = u_pred[:,0]
 
         accel = u_state[0]
         steer = u_state[1]
-        # print(steer)
-        # print(accel)
 
         steer_pub.publish(steer)
         throttle_pub.publish(accel)
         return
     except Exception as e:
-        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
         steer_pub.publish(steer)
         throttle_pub.publish(accel)
-        # print(e.with_traceback())
         return
 
 def subscribers():
@@ -90,7 +74,6 @@ def subscribers():
     
     while not rospy.is_shutdown():
         rate.sleep()
-    # rospy.spin()
 
 
 if __name__ == "__main__":
@@ -132,11 +115,11 @@ if __name__ == "__main__":
     X = []
     Y = []
 
-    # clc = map.xy
-    # clc_opti = np.zeros_like(clc)
+    clc = map.xy
+    clc_opti = np.zeros_like(clc)
 
-    # for i in range(0, len(clc[:,0])):
-    #     clc_opti[i, 0] = clc[i, 1] + (-3.4669)
-    #     clc_opti[i, 1] = -1*clc[i, 0] + 1.9382
+    for i in range(0, len(clc[:,0])):
+        clc_opti[i, 0] = clc[i, 1] + (-3.4669)
+        clc_opti[i, 1] = -1*clc[i, 0] + 1.9382
 
     subscribers()

@@ -1,2 +1,0 @@
-barc
--DCATKIN_DEVEL_PREFIX=/home/bruce/PycharmProjects/barc_ros_ws/devel -DCMAKE_INSTALL_PREFIX=/home/bruce/PycharmProjects/barc_ros_ws/install -G Unix Makefiles
